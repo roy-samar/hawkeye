@@ -1,4 +1,7 @@
 {
     "port": "COM3",
-    "FQBN": "arduino:avr:mega"
+    "FQBN": "arduino:avr:mega",
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "sketch": "Hawkeye.ino"
 }
