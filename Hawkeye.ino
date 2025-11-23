@@ -9,15 +9,22 @@ const int ms3 = 10;
 const int limit1pin = 11;
 const int limit2pin = 12;
 const int limitStopPin = 13;
+const int ledPin = 22;
+const int toggleButtonPin = 23;
 
-bool moving = true;
-int motorSpeed = 20;
+
+
+bool moving = false;
+int motorSpeed = 50;
 int delayMotion = 1000;
 
 // Track if we're ignoring the limit switch until it releases
 bool ignoreLimit1 = false;
 bool ignoreLimit2 = false;
 bool direction = true;  // true for one direction, false for the other
+
+bool ledState = false;       // track LED state
+bool lastButtonState = HIGH; // track previous button state
 
 void setup() {
   pinMode(dirPin, OUTPUT);
@@ -34,9 +41,29 @@ void setup() {
   digitalWrite(ms1, HIGH);
   digitalWrite(ms2, HIGH);
   digitalWrite(ms3, HIGH);
+
+  pinMode(ledPin, OUTPUT);
+  pinMode(toggleButtonPin, INPUT_PULLUP);
+
+  //digitalWrite(ledPin, HIGH);
+
 }
 
 void loop() {
+
+  // --- LED toggle logic ---
+  bool buttonState = digitalRead(toggleButtonPin);
+  // detect transition: HIGH -> LOW (button press)
+  if (lastButtonState == HIGH && buttonState == LOW) {
+    ledState = !ledState; // flip LED state
+    digitalWrite(ledPin, ledState ? HIGH : LOW);
+    delay(50); // debounce
+    moving = !moving;
+  }
+
+  lastButtonState = buttonState;
+
+
   if (digitalRead(limitStopPin)== LOW) {
     moving = false;
   }
