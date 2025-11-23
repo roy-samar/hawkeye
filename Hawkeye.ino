@@ -13,7 +13,7 @@ const int ledPin = 22;
 const int toggleButtonPin = 23;
 
 bool moving = false;
-int motorSpeed = 83;
+int motorSpeed = 40;
 int delayMotion = 1000;
 
 bool ignoreLimit1 = false;
@@ -25,7 +25,7 @@ bool lastButtonState = HIGH;
 
 // step counter
 long stepCount = 0;
-const long targetSteps = 12000; // 10 mL in 2 seconds
+const long targetSteps = 24000; // 10 mL in 2 seconds
 
 void setup() {
   pinMode(dirPin, OUTPUT);
