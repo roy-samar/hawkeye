@@ -15,7 +15,7 @@ const int toggleButtonPin = 23;
 
 
 bool moving = false;
-int motorSpeed = 50;
+int motorSpeed = 83;
 int delayMotion = 1000;
 
 // Track if we're ignoring the limit switch until it releases
