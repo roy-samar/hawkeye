@@ -1,0 +1,33 @@
+#line 1 "C:\\Users\\roysa\\OneDrive\\Documents\\Projects\\hawkeye\\.vscode\\c_cpp_properties.json"
+{
+    "configurations": [
+        {
+            "name": "Arduino",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+                "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
+                "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/variants",
+                "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/circuitplay32u4"
+            ],
+            "defines": [
+                "ARDUINO=10805"
+            ],
+            "compilerPath": "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++.exe",
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+                    "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                    "C:/Users/roysa/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/variants"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

@@ -1,3 +1,4 @@
+#line 1 "C:\\Users\\roysa\\OneDrive\\Documents\\Projects\\hawkeye\\hawkeye.ino"
 #include <Arduino.h>
 
 // pin connections
@@ -11,7 +12,7 @@ const int limit2pin = 12;
 const int limitStopPin = 13;
 
 bool moving = true;
-int motorSpeed = 20;
+int motorSpeed = 50;
 int delayMotion = 1000;
 
 // Track if we're ignoring the limit switch until it releases
@@ -19,6 +20,11 @@ bool ignoreLimit1 = false;
 bool ignoreLimit2 = false;
 bool direction = true;  // true for one direction, false for the other
 
+#line 22 "C:\\Users\\roysa\\OneDrive\\Documents\\Projects\\hawkeye\\hawkeye.ino"
+void setup();
+#line 39 "C:\\Users\\roysa\\OneDrive\\Documents\\Projects\\hawkeye\\hawkeye.ino"
+void loop();
+#line 22 "C:\\Users\\roysa\\OneDrive\\Documents\\Projects\\hawkeye\\hawkeye.ino"
 void setup() {
   pinMode(dirPin, OUTPUT);
   pinMode(stepPin, OUTPUT);
