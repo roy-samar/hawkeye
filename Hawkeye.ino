@@ -20,7 +20,6 @@ bool ignoreLimit1 = false;
 bool ignoreLimit2 = false;
 bool direction = true;  
 
-bool ledState = false;       
 bool lastButtonState = HIGH; 
 
 // step counter
@@ -47,16 +46,17 @@ void setup() {
 }
 
 void loop() {
-  // --- LED toggle logic ---
+  // --- Button logic ---
   bool buttonState = digitalRead(toggleButtonPin);
   if (lastButtonState == HIGH && buttonState == LOW) {
-    ledState = !ledState;
-    digitalWrite(ledPin, ledState ? HIGH : LOW);
-    delay(50); 
+    delay(50);  // debounce
     moving = !moving;
     stepCount = 0; // reset counter on new start
   }
   lastButtonState = buttonState;
+
+  // LED follows motor state
+  digitalWrite(ledPin, moving ? HIGH : LOW);
 
   if (digitalRead(limitStopPin) == LOW) {
     moving = false;
@@ -64,16 +64,18 @@ void loop() {
 
   if (moving) {
     // limit switch logic
-    if (!ignoreLimit1 && direction && digitalRead(limit1pin) == LOW) {
+    if (!ignoreLimit1 && digitalRead(limit1pin) == LOW) {
       delay(delayMotion);
-      direction = !direction;
+      direction = !direction;              // reverse direction
       digitalWrite(dirPin, direction);
+      moving = false;                      // NEW: stop motor until button pressed
       ignoreLimit1 = true;
     }
-    if (!ignoreLimit2 && !direction && digitalRead(limit2pin) == LOW) {
+    if (!ignoreLimit2 && digitalRead(limit2pin) == LOW) {
       delay(delayMotion);
-      direction = !direction;
+      direction = !direction;              // reverse direction
       digitalWrite(dirPin, direction);
+      moving = false;                      // NEW: stop motor until button pressed
       ignoreLimit2 = true;
     }
     if (ignoreLimit1 && digitalRead(limit1pin) == HIGH) ignoreLimit1 = false;
@@ -85,15 +87,12 @@ void loop() {
     digitalWrite(stepPin, LOW);
     delayMicroseconds(motorSpeed);
 
-    // --- NEW: conditional stop logic ---
+    // auto-stop only when dirPin HIGH
     if (digitalRead(dirPin) == HIGH) {
-      // auto-stop after 10 mL
       stepCount++;
       if (stepCount >= targetSteps) {
         moving = false;
-        digitalWrite(ledPin, LOW);
       }
     }
-    // if dirPin == LOW → no auto-stop, only manual button toggles moving
   }
 }
