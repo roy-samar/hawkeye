@@ -25,7 +25,7 @@ int startLimitState     = 0;
 int endLimitState       = 0;
 
 unsigned long stopStartTime = 0;   // For 10s wait
-unsigned long stopStartCounter = 0;   // For 10s wait
+unsigned long stopStartCounter = 1000;   // For 10s wait
 bool waitingAfterRun    = false;
 unsigned long lastLogTime = 0;     // For logging
 
@@ -103,26 +103,15 @@ void loop() {
       delayMicroseconds(motorSpeed);
       stepCounter++;   // Increment step count
     }
-    else
-    {
-      // Stop motor and start 5s wait
-      motorRunning    = false;
-      if (motorDirection == HIGH)
-      {
-        waitingAfterRun = true;
-      }
-      
-      stopStartTime   = millis();
-      if (motorDirection == LOW)
-      {
-        stopStartCounter = 1;
-      }
-      else
-      {
-        stopStartCounter = 1000;
-      }
-        
+    else {
+      motorRunning = false;
       stepCounter  = 0;
+
+      if (motorDirection == HIGH) {
+        waitingAfterRun = true;
+        stopStartTime   = millis();
+      }
+      // if motorDirection == LOW, skip waitingAfterRun entirely
     }
   }
   if (waitingAfterRun) {

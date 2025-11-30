@@ -3,12 +3,15 @@
 Summary
 
 Description
+
 - Simple Arduino sketch to drive a stepper (step/direction) with two limit switches and a stop switch. When a limit switch is hit the motor pauses, reverses direction, and ignores that switch until it releases.
 
 Files
+
 - `hawkeye.ino`
 
 Board example
+
 - Arduino Uno (avr)
 
 Wiring / Pinout
@@ -130,9 +133,11 @@ Next steps I can help with
 
 - Add a wiring diagram (SVG) and embed it in this README.
 - Create a `tasks.json` for upload or a full PlatformIO migration.
+
 # Hawkeye
 
 Summary
+
 - **Description:**: Simple Arduino sketch to drive a stepper (step/direction) with two limit switches and a stop switch. When a limit switch is hit the motor pauses, reverses direction, and ignores that switch until it releases.
 
 **Files:**: `hawkeye.ino`
@@ -140,6 +145,7 @@ Summary
 **Board example:**: Arduino Uno (avr)
 
 Wiring / Pinout
+
 - **Direction pin:**: `dirPin` = `2`
 - **Step pin:**: `stepPin` = `3`
 - **Microstep pins (MS1/MS2/MS3):**: `ms1`=`8`, `ms2`=`9`, `ms3`=`10` (set to `HIGH` in sketch = quarter step in your driver)
@@ -148,12 +154,14 @@ Wiring / Pinout
 - **Stop switch:**: `limitStopPin` = `13` (active LOW with `INPUT_PULLUP`)
 
 Behavior / Configuration
+
 - **motorSpeed**: `motorSpeed = 50` — used as `delayMicroseconds(motorSpeed)` between step pulses. Lower values = faster stepping (watch current/driver specs).
 - **delayMotion**: `delayMotion = 1000` — milliseconds to pause after hitting a limit before reversing.
 - **Ignore flags**: `ignoreLimit1` / `ignoreLimit2` prevent repeated triggers while the switch is still pressed (debounce + safe reverse).
 - **direction**: boolean state written to `dirPin`. The sketch toggles this when a limit is hit.
 
 How it works (brief)
+
 - Main loop checks the stop switch first; if pressed the motor stops moving.
 - If moving, it checks the currently relevant limit switch (based on `direction`). When the switch is pressed (LOW):
   - Pause for `delayMotion` ms
@@ -162,28 +170,36 @@ How it works (brief)
 - While moving, the sketch toggles `stepPin` and waits `motorSpeed` microseconds between transitions to create step pulses.
 
 Build / Verify (arduino-cli)
+
 - Example compile command (from project root):
+
   ```powershell
   arduino-cli compile -b arduino:avr:uno --build-path ".\.arduino_build" "."
   ```
+
 - If you use the Arduino IDE, open the folder as a sketch (file named `hawkeye.ino` inside the folder) and Verify/Upload normally.
 
 Editor / IntelliSense notes
+
 - If you use VS Code with the C/C++ extension, IntelliSense needs the Arduino core include paths. Example `.vscode/c_cpp_properties.json` should include the AVR core and avr-gcc include directories.
 
 Troubleshooting
+
 - "missing hawkeye.ino" — ensure the main sketch filename matches the folder name. This project includes `hawkeye.ino`.
 - "cannot find Arduino.h" squiggles in VS Code — install the Arduino extension or add the core include paths to `.vscode/c_cpp_properties.json`.
 - Build slow warning "Output path is not specified" — use `--build-path` with `arduino-cli` or let the Arduino extension manage builds.
 
 Customizing
+
 - Change `motorSpeed` to adjust step frequency. Use safe values for your stepper motor and driver.
 - Adjust microstep pins `ms1/ms2/ms3` according to your stepper driver datasheet.
 
 Safety
+
 - Ensure motor current limiting and proper power supply for your stepper driver.
 - Confirm limit switch wiring is correct (active LOW with pullups) to avoid unexpected motion.
 
 If you want I can:
+
 - Add a `README.md` with wiring diagram image placeholders, or
 - Generate a `tasks.json` VS Code task to compile/upload with `arduino-cli`.
