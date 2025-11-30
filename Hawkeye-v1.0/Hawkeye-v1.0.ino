@@ -14,7 +14,8 @@ const int endLimit      = 42;  // End limit switch
 // -------------------- Motor Parameters --------------------
 int motorDirection      = HIGH;    // Initial direction
 const int adultsteps    = 22720;   // ~7.1 revs at 3200 steps/rev
-int pediatricsteps= 4500;    // ~1.4 revs at 3200 steps/rev
+int pediatricsteps = 0;    // ~1.4 revs at 3200 steps/rev
+int pediatricsWeight = 0;    // ~1.4 revs at 3200 steps/rev
 int motorSpeed          = 40;      // Microseconds delay for step timing
 
 // -------------------- State Variables --------------------
@@ -29,6 +30,22 @@ unsigned long stopStartCounter = 1000;   // For 10s wait
 bool waitingAfterRun    = false;
 unsigned long lastLogTime = 0;     // For logging
 
+// Convert patient weight (kg) into step count
+long calculateStepsFromWeight(float weightKg) {
+  // Dose in mg
+  float doseMg = 0.01 * weightKg;
+
+  // Volume in mL (since concentration is 0.1 mg/mL)
+  float volumeMl = doseMg / 0.1;
+
+  // Steps per mL (22720 steps = 10 mL)
+  float stepsPerMl = 22720.0 / 10.0;
+
+  // Final step count
+  long steps = (long)(volumeMl * stepsPerMl);
+
+  return steps;
+}
 
 // =========================================================
 // Setup
@@ -64,15 +81,13 @@ void setup() {
 void loop() {
   if (Serial.available()) {
   String cmd = Serial.readStringUntil('\n'); // read a line
-  if (cmd.startsWith("peds")) {
-    pediatricsteps = cmd.substring(5).toInt();
-    Serial.print("pediatricsteps set to: ");
+  if (cmd.startsWith("weight")) {
+    pediatricsWeight = cmd.substring(7).toInt(); // patient weight in kg
+    pediatricsteps = calculateStepsFromWeight(pediatricsWeight);
+    Serial.print("Weight (kg): ");
+    Serial.println(pediatricsWeight);
+    Serial.print("Calculated pediatricsteps: ");
     Serial.println(pediatricsteps);
-  }
-  else if (cmd.startsWith("speed")) {
-    motorSpeed = cmd.substring(6).toInt();
-    Serial.print("motorSpeed set to: ");
-    Serial.println(motorSpeed);
   }
 }
   // -------------------- LED Indicator --------------------
