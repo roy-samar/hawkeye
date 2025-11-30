@@ -14,7 +14,7 @@ const int endLimit      = 42;  // End limit switch
 // -------------------- Motor Parameters --------------------
 int motorDirection      = HIGH;    // Initial direction
 const int adultsteps    = 22720;   // ~7.1 revs at 3200 steps/rev
-const int pediatricsteps= 4500;    // ~1.4 revs at 3200 steps/rev
+int pediatricsteps= 4500;    // ~1.4 revs at 3200 steps/rev
 int motorSpeed          = 40;      // Microseconds delay for step timing
 
 // -------------------- State Variables --------------------
@@ -62,6 +62,19 @@ void setup() {
 // Main Loop
 // =========================================================
 void loop() {
+  if (Serial.available()) {
+  String cmd = Serial.readStringUntil('\n'); // read a line
+  if (cmd.startsWith("peds")) {
+    pediatricsteps = cmd.substring(5).toInt();
+    Serial.print("pediatricsteps set to: ");
+    Serial.println(pediatricsteps);
+  }
+  else if (cmd.startsWith("speed")) {
+    motorSpeed = cmd.substring(6).toInt();
+    Serial.print("motorSpeed set to: ");
+    Serial.println(motorSpeed);
+  }
+}
   // -------------------- LED Indicator --------------------
   bool snMode = (digitalRead(snSwitch) == LOW);
   digitalWrite(epiIndLED, snMode ? HIGH : LOW);
