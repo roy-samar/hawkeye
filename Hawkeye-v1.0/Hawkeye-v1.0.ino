@@ -12,7 +12,7 @@ const int startLimit    = 40;  // Start limit switch
 const int endLimit      = 42;  // End limit switch
 
 // -------------------- Motor Parameters --------------------
-int motorDirection      = HIGH;    // Initial direction
+int motorDirection      = LOW;    // Initial direction
 const int adultsteps    = 22720;   // ~7.1 revs at 3200 steps/rev
 int pediatricsteps = 0;    // ~1.4 revs at 3200 steps/rev
 int pediatricsWeight = 0;    // ~1.4 revs at 3200 steps/rev
@@ -65,7 +65,7 @@ void setup() {
   pinMode(endLimit, INPUT_PULLUP);
 
   // Set direction of rotation to clockwise
-  digitalWrite(dirPin, motorDirection);
+  digitalWrite(dirPin, LOW);
 
   // Configure microstepping (all HIGH = 1/16 step)
   digitalWrite(ms1, HIGH);
@@ -146,5 +146,18 @@ void loop() {
     if (millis() - stopStartTime >= stopStartCounter) {
       waitingAfterRun = false;  // Done waiting, motor can run again
     }
+  }
+  unsigned long now = millis();
+  if (now - lastLogTime >= 1000) {   // every 1000 ms = 1 second
+    lastLogTime = now;
+    Serial.print(" | epiDisButton: "); Serial.print(digitalRead(epiDisButton));
+    Serial.print(" | motorDirection: "); Serial.print(digitalRead(motorDirection));
+    Serial.print(" | motorRunning: "); Serial.print(digitalRead(motorRunning));
+    Serial.print(" | apSwitch: ");   Serial.print(digitalRead(apSwitch));
+    Serial.print(" | snSwitch: ");   Serial.print(digitalRead(snSwitch));
+    Serial.print(" | startLimit: "); Serial.print(digitalRead(startLimit));
+    Serial.print(" | endLimit: ");   Serial.print(digitalRead(endLimit));
+    Serial.print(" | epiIndLED: ");  Serial.print(digitalRead(epiIndLED));
+    Serial.println("");
   }
 }
